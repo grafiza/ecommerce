@@ -1,5 +1,6 @@
 package com.tpe.domain;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,10 +14,12 @@ import javax.validation.constraints.NotNull;
 public class OrderItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Setter(AccessLevel.NONE)
     private Long id;
     @NotNull(message = "Quantity can not be null")
     private Integer quantity;
     @NotNull(message = "Total price can not be null")
+    @Setter(AccessLevel.NONE)
     private Double totalPrice;
     @ManyToOne
     @JoinColumn(nullable = false)
@@ -27,5 +30,10 @@ public class OrderItem {
     @NotNull(message = "Customer can not be null")
     // todo
     private Customer customer;
-//todo
+
+    @PrePersist
+    @PreUpdate
+    public void countTotalPrice() {
+        this.totalPrice = this.product.getPrice() * this.quantity;
+    }
 }
