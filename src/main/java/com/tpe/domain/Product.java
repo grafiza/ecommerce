@@ -31,4 +31,6 @@ public class Product {
         this.brand = brand;
         this.price = price;
     }
+
+
 }
